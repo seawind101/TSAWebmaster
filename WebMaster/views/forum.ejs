@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <style>
+        body{font-family:Arial, sans-serif; max-width:900px;margin:2rem auto;padding:0 1rem}
+        header{display:flex;justify-content:space-between;align-items:center}
+        .post{border:1px solid #ddd;padding:0.75rem;border-radius:4px;margin-bottom:0.75rem}
+    </style>
+    </head>
+<body>
+    <header>
+        <h1>Forum</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/chub">Resources</a>
+        </nav>
+    </header>
+
+    <section>
+        <h2>Start a discussion</h2>
+        <form action="/post" method="post">
+            <div>
+                <label>Your name: <input type="text" name="author" required></label>
+            </div>
+            <div>
+                <label>Message:<br>
+                    <textarea name="message" rows="4" required></textarea>
+                </label>
+            </div>
+            <div>
+                <button type="submit">Post</button>
+            </div>
+        </form>
+    </section>
+
+    <section>
+        <h2>Recent posts</h2>
+        <% if (posts && posts.length) { %>
+            <% posts.slice().reverse().forEach(function(p){ %>
+                <div class="post">
+                    <strong><%= p.author %></strong> <small><%= new Date(p.createdAt).toLocaleString() %></small>
+                    <p><%= p.message %></p>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No posts yet — start the conversation!</p>
+        <% } %>
+    </section>
+
+</body>
+</html>

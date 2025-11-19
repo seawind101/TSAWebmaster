@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources</title>
+    <style>
+        body{font-family:Arial, sans-serif; max-width:900px;margin:2rem auto;padding:0 1rem}
+        header{display:flex;justify-content:space-between;align-items:center}
+        form { margin-top:1rem }
+        ul { list-style:none; padding-left:0 }
+        li { margin:0.5rem 0; padding:0.5rem; border:1px solid #ddd; border-radius:4px }
+    </style>
+    </head>
+<body>
+    <header>
+        <h1>Community Resources</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/forum">Forum</a>
+        </nav>
+    </header>
+
+    <section>
+        <h2>Share a resource</h2>
+        <form action="/submit" method="post">
+            <div>
+                <label>Title: <input type="text" name="title" required></label>
+            </div>
+            <div>
+                <label>URL: <input type="url" name="url" required placeholder="https://example.com"></label>
+            </div>
+            <div>
+                <label>Description:<br>
+                    <textarea name="description" rows="3"></textarea>
+                </label>
+            </div>
+            <div>
+                <button type="submit">Submit resource</button>
+            </div>
+        </form>
+    </section>
+
+    <section>
+        <h2>All resources</h2>
+        <% if (resources && resources.length) { %>
+            <ul>
+                <% resources.forEach(function(r){ %>
+                    <li>
+                        <a href="<%= r.url %>" target="_blank" rel="noopener noreferrer"><strong><%= r.title %></strong></a>
+                        <p><%= r.description || '' %></p>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>No resources yet — be the first to add one!</p>
+        <% } %>
+    </section>
+
+</body>
+</html>
