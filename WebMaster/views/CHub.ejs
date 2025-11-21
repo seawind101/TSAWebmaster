@@ -10,8 +10,11 @@
 
 <body>
     <div id="navlinks">
-        <a id="home" href="/">Home</a>
+        <h2 id="chubttl">CHUB.</h2>  
+        <div id="btns">
+            <a id="home" href="/">Home</a>
         <a id="forum" href="/forum">Forum</a>
+        </div>
     </div>
     <div id="resourceCont">
 
@@ -28,7 +31,10 @@
         </section>
 
         <section>
-            <h2>All Resources</h2>
+            <div id="rtbanner">
+                <h2>All Resources</h2>
+                <input type="text" id="searchbar" onkeyup="searchResources()" placeholder="Search...">
+            </div>
             <% if (resources && resources.length) { %>
                 <ul>
                     <% resources.forEach(function(r){ %>
@@ -40,7 +46,7 @@
                                 <%= r.description || '' %>
                             </p>
                             <a id="titleref" href="<%= r.url %>" target="_blank" rel="noopener noreferrer"><strong>
-                                    Go to Resource
+                                    Go There!
                                 </strong></a>
                         </li>
                         <% }) %>
@@ -53,3 +59,24 @@
 </body>
 
 </html>
+<script>
+    function searchResources() {
+        const input = document.getElementById('searchbar');
+        const filter = input.value.toLowerCase();
+        const ul = document.querySelector('#resourceCont ul');
+        const li = ul.getElementsByTagName('li');
+
+        for (let i = 0; i < li.length; i++) {
+            const title = li[i].getElementsByTagName('strong')[0];
+            const description = li[i].getElementsByTagName('p')[0];
+            const titleText = title.textContent || title.innerText;
+            const descriptionText = description.textContent || description.innerText;
+
+            if (titleText.toLowerCase().indexOf(filter) > -1 || descriptionText.toLowerCase().indexOf(filter) > -1) {
+                li[i].style.display = '';
+            } else {
+                li[i].style.display = 'none';
+            }
+        }
+    }
+</script>
