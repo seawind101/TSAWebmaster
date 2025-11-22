@@ -32,7 +32,7 @@ ul {
 
 li {
     margin: 2rem 0;
-    padding: 1rem;
+    padding: 2rem;
     border: transparent;
     border-radius: 5px;
     background-color: #4CAF50;
@@ -96,6 +96,8 @@ li {
     border-radius: 5px;
     background-color: white;
     padding: 5px;
+    margin-top: 18px;
+    display: inline-block;
 }
 
 #titleref:hover {
