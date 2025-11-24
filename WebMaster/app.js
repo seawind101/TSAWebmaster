@@ -31,6 +31,8 @@ app.use(express.json());
 
 // Static files (optional)
 app.use('/public', express.static(path.join(__dirname, 'public')));
+// Serve CSS directory so stylesheet requests like /css/index.css return the correct file and MIME type
+app.use('/css', express.static(path.join(__dirname, 'css')));
 
 app.get('/', (req, res) => {
     res.render('index');

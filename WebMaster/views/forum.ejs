@@ -1,44 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum</title>
-    <style>
-        body{font-family:Arial, sans-serif; max-width:900px;margin:2rem auto;padding:0 1rem}
-        header{display:flex;justify-content:space-between;align-items:center}
-        .post{border:1px solid #ddd;padding:0.75rem;border-radius:4px;margin-bottom:0.75rem}
-    </style>
-    </head>
+    <link rel="stylesheet" href="/css/forum.css">
+</head>
+
 <body>
-    <header>
-        <h1>Forum</h1>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/chub">Resources</a>
-        </nav>
-    </header>
+    <div id="navlinks">
+        <h2 id="chubttl">CHUB.</h2>  
+        <div id="btns">
+            <a id="home" href="/">Home</a>
+        <a id="resources" href="/chub">Resources</a>
+        </div>
+    </div>
+    <div id="createCont">
+        <header>
+            <h1>Create</h1>
 
-    <section>
-        <h2>Share a resource</h2>
-        <form action="/submit" method="post">
-            <div>
-                <label>Title: <input type="text" name="title" required></label>
-            </div>
-            <div>
-                <label>URL: <input type="url" name="url" required placeholder="https://example.com"></label>
-            </div>
-            <div>
-                <label>Description:<br>
-                    <textarea name="description" rows="3"></textarea>
-                </label>
-            </div>
-            <div>
-                <button type="submit">Submit resource</button>
-            </div>
-        </form>
-        <p>After submitting, view all resources on the <a href="/chub">Resource Hub</a>.</p>
-    </section>
+        </header>
 
+        <section>
+            <form action="/submit" method="post">
+                <div>
+                    <label>Title<br>
+                        <input id="titlebox" type="text" name="title" required></label>
+                </div>
+                <div>
+                    <label>URL<br>
+                        <input id="URLbox" type="url" name="url" required
+                            placeholder="https://example.com"></label>
+                </div>
+                <div>
+                    <label>Description<br>
+                        <textarea id="descbox" name="description" rows="3"></textarea>
+                    </label>
+                </div>
+                <div>
+                    <button id="submit" type="submit">Submit</button>
+                </div>
+            </form>
+            <p>After submitting, view all resources on the <a id="rhubt" href="/chub">Resource Hub</a>.</p>
+        </section>
+    </div>
 </body>
+
 </html>

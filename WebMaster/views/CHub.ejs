@@ -1,46 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resources</title>
-    <style>
-        body{font-family:Arial, sans-serif; max-width:900px;margin:2rem auto;padding:0 1rem}
-        header{display:flex;justify-content:space-between;align-items:center}
-        form { margin-top:1rem }
-        ul { list-style:none; padding-left:0 }
-        li { margin:0.5rem 0; padding:0.5rem; border:1px solid #ddd; border-radius:4px }
-    </style>
-    </head>
+    <link rel="stylesheet" href="/css/chub.css">
+</head>
+
 <body>
-    <header>
-        <h1>Community Resources</h1>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/forum">Forum</a>
-        </nav>
-    </header>
+    <div id="navlinks">
+        <h2 id="chubttl">CHUB.</h2>  
+        <div id="btns">
+            <a id="home" href="/">Home</a>
+        <a id="forum" href="/forum">Create +</a>
+        </div>
+    </div>
+    <div id="resourceCont">
 
-    <section>
-        <h2>Submit a resource</h2>
-        <p>To share a resource with the community, go to the <a href="/forum">Forum</a> and submit it there. All approved resources appear on this Resource Hub.</p>
-    </section>
+        <header>
+            <h1>Community Resources</h1>
+        </header>
+        <hr>
+        <section>
+            <h2>Submit a Resource</h2>
+            <p>To share a resource with the community, go to the <a id="forumlink"
+                    href="/forum"><strong>Forum</strong></a>
+                and submit it there.
+                All approved resources appear on this Resource Hub.</p><br>
+        </section>
 
-    <section>
-        <h2>All resources</h2>
-        <% if (resources && resources.length) { %>
-            <ul>
-                <% resources.forEach(function(r){ %>
-                    <li>
-                        <a href="<%= r.url %>" target="_blank" rel="noopener noreferrer"><strong><%= r.title %></strong></a>
-                        <p><%= r.description || '' %></p>
-                    </li>
-                <% }) %>
-            </ul>
-        <% } else { %>
-            <p>No resources yet — be the first to add one!</p>
-        <% } %>
-    </section>
-
+        <section>
+            <div id="rtbanner">
+                <h2>All Resources</h2>
+                <input type="text" id="searchbar" onkeyup="searchResources()" placeholder="Search...">
+            </div>
+            <% if (resources && resources.length) { %>
+                <ul>
+                    <% resources.forEach(function(r){ %>
+                        <li>
+                            <strong id="titletxt">
+                                <%= r.title %>
+                            </strong>
+                            <hr style="width: 65% ; margin-left: 0; margin-top: 5px; margin-bottom: 5px; height: 4px; background-color: #ffffff; border: none;">
+                            <p>
+                                <%= r.description || '' %>
+                            </p>
+                            <a id="titleref" href="<%= r.url %>" target="_blank" rel="noopener noreferrer"><strong>
+                                    Go There!
+                                </strong></a>
+                        </li>
+                        <% }) %>
+                </ul>
+                <% } else { %>
+                    <p>No resources yet — be the first to add one!</p>
+                    <% } %>
+        </section>
+    </div>
 </body>
+
 </html>
+<script>
+    function searchResources() {
+        const input = document.getElementById('searchbar');
+        const filter = input.value.toLowerCase();
+        const ul = document.querySelector('#resourceCont ul');
+        const li = ul.getElementsByTagName('li');
+
+        for (let i = 0; i < li.length; i++) {
+            const title = li[i].getElementsByTagName('strong')[0];
+            const description = li[i].getElementsByTagName('p')[0];
+            const titleText = title.textContent || title.innerText;
+            const descriptionText = description.textContent || description.innerText;
+
+            if (titleText.toLowerCase().indexOf(filter) > -1 || descriptionText.toLowerCase().indexOf(filter) > -1) {
+                li[i].style.display = '';
+            } else {
+                li[i].style.display = 'none';
+            }
+        }
+    }
+</script>
