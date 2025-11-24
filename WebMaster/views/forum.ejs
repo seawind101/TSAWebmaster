@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <link rel="stylesheet" href="/css/forum.css">
+</head>
+
+<body>
+    <div id="navlinks">
+        <h2 id="chubttl">CHUB.</h2>  
+        <div id="btns">
+            <a id="home" href="/">Home</a>
+        <a id="resources" href="/chub">Resources</a>
+        </div>
+    </div>
+    <div id="createCont">
+        <header>
+            <h1>Create</h1>
+
+        </header>
+
+        <section>
+            <form action="/submit" method="post">
+                <div>
+                    <label>Title<br>
+                        <input id="titlebox" type="text" name="title" required></label>
+                </div>
+                <div>
+                    <label>URL<br>
+                        <input id="URLbox" type="url" name="url" required
+                            placeholder="https://example.com"></label>
+                </div>
+                <div>
+                    <label>Description<br>
+                        <textarea id="descbox" name="description" rows="3"></textarea>
+                    </label>
+                </div>
+                <div>
+                    <button id="submit" type="submit">Submit</button>
+                </div>
+            </form>
+            <p>After submitting, view all resources on the <a id="rhubt" href="/chub">Resource Hub</a>.</p>
+        </section>
+    </div>
+</body>
+
+</html>
