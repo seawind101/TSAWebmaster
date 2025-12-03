@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const sqlite3 = require('sqlite3').verbose();
+const http = require('http').createServer(app);
+const socketio = require('socket.io');
+const io = socketio(http);
 const port = 3000;
 // Initialize SQLite database
 const db = new sqlite3.Database('./database/data.db', (err) => {
@@ -67,7 +70,32 @@ app.post('/submit', (req, res) => {
             console.error('DB error inserting resource', err);
             return res.status(500).send('Database error');
         }
-        res.redirect('/chub');
+        // fetch the inserted row so we can broadcast it to connected clients
+        const insertedId = this.lastID;
+        db.get('SELECT * FROM resources WHERE id = ?', [insertedId], (err2, row) => {
+            if (err2) {
+                console.error('DB error fetching inserted resource', err2);
+            } else if (row) {
+                // emit to all connected clients so UIs can update in real-time
+                io.emit('resource_added', row);
+            }
+            // finally redirect the submitter back to the resource hub
+            res.redirect('/chub');
+        });
+    });
+});
+
+// Socket.io connection handling
+io.on('connection', (socket) => {
+    console.log('Socket connected:', socket.id);
+    socket.on('disconnect', () => {
+        console.log('Socket disconnected:', socket.id);
+    });
+    // optional: receive messages from client
+    socket.on('data_sent', (data) => {
+        console.log('Received data_sent from client:', data);
+        // If needed, broadcast to other clients:
+        // socket.broadcast.emit('data_sent', data);
     });
 });
 
@@ -79,6 +107,6 @@ process.on('SIGINT', () => {
     });
 });
 
-app.listen(port, () => {
+http.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
