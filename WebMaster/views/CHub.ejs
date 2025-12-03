@@ -42,6 +42,7 @@
                             <strong id="titletxt">
                                 <%= r.title %>
                             </strong>
+                            <div id="time"><%= new Date(r.createdAt).toLocaleString() %></div>
                             <hr style="width: 65% ; margin-left: 0; margin-top: 5px; margin-bottom: 5px; height: 4px; background-color: #ffffff; border: none;">
                             <p>
                                 <%= r.description || '' %>
@@ -60,18 +61,20 @@
 </body>
 
 </html>
+<script src="/socket.io/socket.io.js"></script>
 <script>
     function searchResources() {
         const input = document.getElementById('searchbar');
         const filter = input.value.toLowerCase();
         const ul = document.querySelector('#resourceCont ul');
+        if (!ul) return;
         const li = ul.getElementsByTagName('li');
 
         for (let i = 0; i < li.length; i++) {
             const title = li[i].getElementsByTagName('strong')[0];
             const description = li[i].getElementsByTagName('p')[0];
-            const titleText = title.textContent || title.innerText;
-            const descriptionText = description.textContent || description.innerText;
+            const titleText = title ? (title.textContent || title.innerText) : '';
+            const descriptionText = description ? (description.textContent || description.innerText) : '';
 
             if (titleText.toLowerCase().indexOf(filter) > -1 || descriptionText.toLowerCase().indexOf(filter) > -1) {
                 li[i].style.display = '';
@@ -80,4 +83,42 @@
             }
         }
     }
+
+    //html escape function bc socket lowkey kinda sucks tbh
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    // Connect to socket.io server 😫
+    const socket = io();
+
+    // When a new resource is added by someone, append it to the list yay!
+    socket.on('resource_added', (r) => {
+        // find or create the list container
+        let ul = document.querySelector('#resourceCont ul');
+        if (!ul) {
+            // remove any "No resources yet" message
+            const noResP = document.querySelector('#resourceCont section:nth-of-type(2) p');
+            if (noResP) noResP.remove();
+            // create ul and append after banner div
+            const section = document.querySelector('#resourceCont section:nth-of-type(2)');
+            ul = document.createElement('ul');
+            section.appendChild(ul);
+        }
+
+        const li = document.createElement('li');
+        li.innerHTML = '<strong id="titletxt">' + escapeHtml(r.title) + '</strong>' +
+            '<hr style="width: 65% ; margin-left: 0; margin-top: 5px; margin-bottom: 5px; height: 4px; background-color: #ffffff; border: none;">' +
+            '<p>' + escapeHtml(r.description || '') + '</p>' +
+            '<a id="titleref" href="' + escapeHtml(r.url) + '" target="_blank" rel="noopener noreferrer"><strong>Go There!</strong></a>';
+
+        ul.insertBefore(li, ul.firstChild);
+
+        searchResources();
+    });
 </script>

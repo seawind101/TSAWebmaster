@@ -38,6 +38,8 @@ li {
     background-color: #4CAF50;
     color: white;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.329);
+    /* contain any floated children (like #time) */
+    overflow: auto;
 }
 
 #rtbanner {
@@ -132,4 +134,15 @@ li {
 
 #titletxt {
     font-size: 1.3rem;
+    /* allow #time to float to the right beside the title */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#time {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    /* move the time to the right side of the list item */
+    float: right;
+    margin-left: 10px;
 }
