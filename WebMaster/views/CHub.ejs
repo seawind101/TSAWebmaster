@@ -43,26 +43,36 @@
                                 <%= r.title %>
                             </strong>
                             <div id="time"><%= new Date(r.createdAt).toLocaleString() %></div>
-                            <hr style="width: 65% ; margin-left: 0; margin-top: 5px; margin-bottom: 5px; height: 4px; background-color: #ffffff; border: none;">
+                            <hr style="width: 65%; margin-left: 0; margin-top: 5px; margin-bottom: 5px; height: 4px; background-color: #ffffff; border: none;">
                             <p>
                                 <%= r.description || '' %>
                             </p>
-                            <a id="titleref" href="<%= r.url %>" target="_blank" rel="noopener noreferrer"><strong>
-                                    Go There!
-                                </strong></a>
+                            <a id="titleref" href="<%= r.url %>" target="_blank" rel="noopener noreferrer" onclick="return verifyCheck(<%= r.verify %>)">
+                                <strong>Go There!</strong>
+                            </a>
                         </li>
-                        <% }) %>
-                </ul>
-                <% } else { %>
-                    <p>No resources yet — be the first to add one!</p>
+                    <% }) %>
+                    </ul>
+                    <% } else { %>
+                        <p>No resources yet — be the first to add one!</p>
                     <% } %>
         </section>
+                    
     </div>
 </body>
-
+                    
 </html>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    function verifyCheck(isVerified) {
+        if (!isVerified) {
+            const proceed = confirm("This resource has not been verified. Are you sure you want to proceed?");
+            return proceed; // If true, navigation continues; if false, navigation is prevented.
+        }
+        return true; // If verified, allow navigation.
+        }
+
+
     function searchResources() {
         const input = document.getElementById('searchbar');
         const filter = input.value.toLowerCase();

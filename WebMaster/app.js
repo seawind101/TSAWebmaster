@@ -85,6 +85,10 @@ app.post('/submit', (req, res) => {
     });
 });
 
+app.get('/admin', (req, res) => {
+    res.render('admin');
+});
+
 // Socket.io connection handling
 io.on('connection', (socket) => {
     console.log('Socket connected:', socket.id);
