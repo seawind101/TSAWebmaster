@@ -106,7 +106,7 @@ li {
     background-color: rgb(211, 211, 211);
 }
 
-#home, #forum {
+#home, #forum, #referencePage {
     margin: 0 10px;
     text-decoration: none;
     padding: 10px;
@@ -122,6 +122,11 @@ li {
     border: 2px solid #008CBA;
 }
 
+#referencePage {
+    color: #ff964f;
+    border: 2px solid #ff964f;
+}
+
 #home:hover {
     background-color: rgb(255, 106, 130);
     color: white;
@@ -129,6 +134,11 @@ li {
 
 #forum:hover {
     background-color: #008CBA;
+    color: white;
+}
+
+#referencePage:hover {
+    background-color: #ff964f;
     color: white;
 }
 

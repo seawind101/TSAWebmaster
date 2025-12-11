@@ -32,6 +32,7 @@ h1 {
 
 #forum {
     display: inline-block;
+    margin-right: 20px;
     padding: 10px 20px;
     background-color: #008CBA;
     color: white;
@@ -41,4 +42,17 @@ h1 {
 
 #forum:hover {
     background-color: #007bb5;
+}
+
+#referencePage {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff964f;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+#referencePage:hover {
+    background-color: #e68345;
 }
