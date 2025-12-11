@@ -112,6 +112,12 @@ process.on('SIGINT', () => {
     });
 });
 
+app.get('/reference', (req, res) => {
+    res.render('reference');
+});
+
+app.use('/referenceFiles', express.static('referenceFiles'));
+
 http.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
