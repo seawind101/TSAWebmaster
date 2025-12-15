@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surplus</title>
+</head>
+
+<body>
+    <div id="list">
+        <div id="banner">
+            <div id="title">
+                <h1>Surplus</h1>
+                <h5>Food Bank</h5>
+            </div>
+            <div id="links">
+                <a href="#events">Events</a>
+                <a href="#info">Info</a>
+                <a href="#programs">Programs</a>
+                <a href="#ways">Ways to Give</a>
+                <a href="#about">About</a>
+            </div>
+        </div>
+        <div id="content">
+            <div class="section">
+                <h2 id="events" class="anchor"> Surplus Serving Events</h2>
+                <h4>Saturday, December 13th at 10:15 AM and 2:30 PM</h4>
+                <h4>Sunday, December 21st at 10: 15 AM and 1:30 PM</h4>
+                <p>These dates can change due to weather conditions.</p>
+                <p>Dates update biweekly.</p>
+                <p>Check the wbsite or social media for the most up-to-date information.</p>
+            </div>
+            <div class="section">
+                <h2 id="info" class="anchor">Info</h2>
+                <h4>Number</h4>
+                <p>+1 224-228-7123</p>
+                <h4>Email</h4>
+                <p>servetoday@surplus.org</p>
+                <h4>Address</h4>
+                <p>378 Coal Street, Altoona PA</p>
+            </div>
+            <div class="section">
+                <h2 id="programs" class="anchor">Programs</h2>
+                <h4>Drive-Thru Distributions</h4>
+                <p>Every Monday 10 AM - 1 PM</p>
+                <p>Attend our distributions to provide food and essentials to those who drive up.</p>
+                <h4>Senior Box Program</h4>
+                <p>Every Tuesday 7 AM - 11 AM</p>
+                <p>For seniors aged 60 and above. Pre-registration required. Call to register.</p>
+                <h4>Surplus Serving</h4>
+                <p>Every Thursday 2 PM - 4 PM</p>
+                <p>Join us in volunteering to help distribute food and essentials to the community.</p>
+            </div>
+            <div class="section">
+                <h2 id="ways" class="anchor">Ways to Give</h2>
+                <h4>Donate</h4>
+                <p>Contribute financially or with goods to support our mission.</p>
+                <h4>Volunteer</h4>
+                <p>Join our team of volunteers to make a difference in the community.</p>
+                <h4>Partner with Us</h4>
+                <p>Businesses and organizations can partner with Surplus to expand our reach.</p>
+            </div>
+            <div class="section" id="aboutSection">
+                <h2 id="about" class="anchor">About</h2>
+                <h4>Our Team</h4>
+                <p>Meet the dedicated individuals behind Surplus: </p>
+                <ul>
+                    <li>Charles Munson - Founder & CEO</li>
+                    <li>Reagan Quil - Operations Manager</li>
+                    <li>Pam Johnson - Volunteer Coordinator</li>
+                    <li>Michael Brown - Community Outreach Specialist</li>
+                </ul>
+                <h4>Our Mission</h4>
+                <p>At Surplus, our mission is to combat food insecurity and provide essential resources to underserved
+                    communities. We believe in the power of community and strive to create a supportive environment
+                    where
+                    everyone has access to nutritious food and basic necessities. Through our various programs and
+                    initiatives, we aim to make a positive impact on the lives of those we serve.</p>
+                <h4>Our History</h4>
+                <p>Founded in 2010 by Charles Munson, Surplus began as a small community initiative to address food
+                    waste
+                    and hunger. Over the years, we have grown into a comprehensive organization that offers a range of
+                    programs to support individuals and families in need. Our commitment to sustainability and community
+                    engagement has been at the core of our growth and success.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+
+</script>
+<style>
+    /* General Page Styling */
+    body {
+        background-color: #f7f5ef;
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Links in Header */
+    a {
+        font-size: 20px;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    a:hover {
+        opacity: 0.85;
+    }
+
+    #content {
+        margin-top: 140px;
+        scroll-behavior: smooth;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Anchor Offset */
+    .anchor {
+        scroll-margin-top: 180px;
+    }
+
+    .section {
+        width: 900px;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+        box-sizing: border-box;
+        flex-direction: column;
+        background-color: #4b4b4b;
+        border-radius: 16px;
+        box-shadow: 0 2px 6px rgba(0, 0,0, 0.1);
+    }
+
+
+    /* Banner/Header */
+    #banner {
+        height: 120px;
+        background: linear-gradient(90deg, #5ba352, #8fcf66);
+        top: 0;
+        width: 100%;
+        position: fixed;
+        left: 0;
+        z-index: 1000;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        display: flex;
+        justify-content: space-between;
+        padding: 0 40px;
+        align-items: center;
+    }
+
+    /* Navigation Links */
+    #links {
+        display: flex;
+        gap: 40px;
+        margin-right: -1000px;
+    }
+
+    /* Page Title Inside Banner */
+    #title {
+        font-size: 36px;
+        color: white;
+        font-weight: bold;
+        margin-top: -30px;
+        position: static;
+    }
+
+    #aboutSection {
+        width: 1840px;
+    }
+
+    /* Headers */
+    h1 {
+        color: #4b4b4b;
+        padding: 20px;
+        text-align: left;
+    }
+
+    h5 {
+        margin-top: -78px;
+        margin-left: 40px;
+        color: rgb(247, 247, 247);
+        font-weight: 100;
+        text-align: left;
+    }
+
+    h2 {
+        background-color: #ffb867;
+        color: #4b4b4b;
+        padding: 20px;
+        margin-bottom: 20px;
+        font-weight: bold;
+        text-align: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        scale: 1.03;
+        margin-top: -10px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        box-sizing: border-box;
+    }
+
+    h4 {
+        color: white;
+        font-size: 20px;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Paragraphs */
+    p {
+        font-size: 20px;
+        color: white;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Div Layout */
+    div {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    /* Lists */
+    ul {
+        list-style-type: none;
+        padding: 0;
+        font-size: 20px;
+        color: white;
+        text-align: center;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+</style>

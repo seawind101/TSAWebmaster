@@ -10,8 +10,9 @@
 
 <body>
     <div id="navlinks">
-        <h2 id="chubttl">CHUB.</h2>  
+        <h2 id="chubttl">C-HUB.</h2>  
         <div id="btns">
+            <a id="referencePage" href="/reference">Reference Page</a>
             <a id="home" href="/">Home</a>
         <a id="forum" href="/forum">Create +</a>
         </div>
@@ -41,28 +42,44 @@
                         <li>
                             <strong id="titletxt">
                                 <%= r.title %>
+                                <% if (r.verified) { %>
+                                    <span class="verified" title="Verified">&#10003;</span>
+                                <% } %>
                             </strong>
                             <div id="time"><%= new Date(r.createdAt).toLocaleString() %></div>
-                            <hr style="width: 65% ; margin-left: 0; margin-top: 5px; margin-bottom: 5px; height: 4px; background-color: #ffffff; border: none;">
+                            <hr style="width: 65%; margin-left: 0; margin-top: 5px; margin-bottom: 5px; height: 4px; background-color: #ffffff; border: none;">
                             <p>
                                 <%= r.description || '' %>
                             </p>
                             <a id="titleref" href="<%= r.url %>" target="_blank" rel="noopener noreferrer"><strong>
                                     Go There!
                                 </strong></a>
+
+                            <!-- input box at bottom-right of each resource -->
+                            <input class="box-input" data-id="<%= r.id %>" type="text" placeholder="insert code to edit" />
                         </li>
-                        <% }) %>
-                </ul>
-                <% } else { %>
-                    <p>No resources yet — be the first to add one!</p>
+                    <% }) %>
+                    </ul>
+                    <% } else { %>
+                        <p>No resources yet — be the first to add one!</p>
                     <% } %>
         </section>
+                    
     </div>
 </body>
-
+                    
 </html>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    function verifyCheck(isVerified) {
+        if (!isVerified) {
+            const proceed = confirm("This resource has not been verified. Are you sure you want to proceed?");
+            return proceed; // If true, navigation continues; if false, navigation is prevented.
+        }
+        return true; // If verified, allow navigation.
+        }
+
+
     function searchResources() {
         const input = document.getElementById('searchbar');
         const filter = input.value.toLowerCase();
@@ -102,23 +119,68 @@
         // find or create the list container
         let ul = document.querySelector('#resourceCont ul');
         if (!ul) {
-            // remove any "No resources yet" message
             const noResP = document.querySelector('#resourceCont section:nth-of-type(2) p');
             if (noResP) noResP.remove();
-            // create ul and append after banner div
             const section = document.querySelector('#resourceCont section:nth-of-type(2)');
             ul = document.createElement('ul');
             section.appendChild(ul);
         }
 
         const li = document.createElement('li');
-        li.innerHTML = '<strong id="titletxt">' + escapeHtml(r.title) + '</strong>' +
+        li.innerHTML = '<strong id="titletxt">' + escapeHtml(r.title) + (r.verified ? ' <span class="verified" title="Verified">&#10003;</span>' : '') + '</strong>' +
             '<hr style="width: 65% ; margin-left: 0; margin-top: 5px; margin-bottom: 5px; height: 4px; background-color: #ffffff; border: none;">' +
             '<p>' + escapeHtml(r.description || '') + '</p>' +
-            '<a id="titleref" href="' + escapeHtml(r.url) + '" target="_blank" rel="noopener noreferrer"><strong>Go There!</strong></a>';
+            '<a id="titleref" href="' + escapeHtml(r.url) + '" target="_blank" rel="noopener noreferrer"><strong>Go There!</strong></a>' +
+            '<input class="box-input" data-id="' + escapeHtml(r.id) + '" type="text" placeholder="Add note..." />';
 
         ul.insertBefore(li, ul.firstChild);
 
         searchResources();
+    });
+
+    // verify input value with server; open edit page if match
+    function verifyAndOpen(id, code, inputEl) {
+        fetch('/verify-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id, code: code })
+        })
+        .then(r => r.json())
+        .then(j => {
+            if (j.ok) {
+                if (j.admin) {
+                    window.location.href = '/admin';
+                } else {
+                    window.location.href = '/edit/' + id;
+                }
+            } else {
+                inputEl.style.borderColor = 'red';
+                setTimeout(() => inputEl.style.borderColor = '', 1200);
+            }
+        })
+        .catch(() => {
+            inputEl.style.borderColor = 'red';
+        });
+    }
+
+    // attach Enter handler to per-resource inputs
+    function attachInputHandlers() {
+        document.querySelectorAll('.box-input').forEach(inp => {
+            inp.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const id = inp.dataset.id;
+                    verifyAndOpen(id, inp.value.trim(), inp);
+                }
+            });
+        });
+    }
+
+    // call on load and when socket adds a new li
+    attachInputHandlers();
+    // when socket adds a resource, re-attach handlers
+    const originalSocketHandler = socket.listeners && socket.listeners('resource_added');
+    socket.on('resource_added', (r) => {
+        // ...existing code that inserts li...
+        attachInputHandlers();
     });
 </script>
