@@ -45,6 +45,18 @@ body {
     resize: none;
 }
 
+#codebox {
+    width: 50%;
+    padding: 8px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+    resize: none;
+    font-family: 'Courier New', Courier, monospace;
+}
+
 #createCont {
     position: fixed;
     top: 50%;
