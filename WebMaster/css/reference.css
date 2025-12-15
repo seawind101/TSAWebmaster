@@ -1,0 +1,99 @@
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #f9f9f9;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#navlinks {
+    width: 100%;
+    display: flex;
+    background-color: black;
+    margin-right: auto;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#chubttl {
+    color: white;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+#home,
+#forum,
+#resources {
+    margin: 0 10px;
+    text-decoration: none;
+    padding: 10px;
+    color: rgb(255, 106, 130);
+    border: 2px solid rgb(255, 106, 130);
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.3s all ease;
+}
+
+#resources {
+    color: #4CAF50;
+    border: 2px solid #4CAF50;
+}
+
+#forum {
+    color: #2196F3;
+    border: 2px solid #2196F3;
+}
+
+#resourceCont {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+#home:hover {
+    background-color: rgb(255, 106, 130);
+    color: white;
+}
+
+#forum:hover {
+    background-color: #008CBA;
+    color: white;
+}
+
+#btns {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 15px;
+}
+
+header {
+    margin-top: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+#content {
+    text-align: left;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+h5 {
+    font-weight: normal;
+    font-size: 15px;
+}

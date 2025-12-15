@@ -98,7 +98,7 @@ body {
     border-radius: 5px;
 }
 
-#home, #resources {
+#home, #resources, #referencePage {
     margin: 0 10px;
     text-decoration: none;
     padding: 10px;
@@ -114,8 +114,18 @@ body {
     border: 2px solid #4CAF50;
 }
 
+#referencePage {
+    color: #ff964f;
+    border: 2px solid #ff964f;
+}
+
 #home:hover {
     background-color: rgb(255, 106, 130);
+    color: white;
+}
+
+#referencePage:hover {
+    background-color: #ff964f;
     color: white;
 }
 
