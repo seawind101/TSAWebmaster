@@ -1,4 +1,4 @@
-CREATE TABLE reasources (
+CREATE TABLE resources (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     url VARCHAR(255) NOT NULL,

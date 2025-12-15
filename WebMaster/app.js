@@ -6,22 +6,6 @@ const http = require('http').createServer(app);
 const socketio = require('socket.io');
 const io = socketio(http);
 const port = 3000;
-// Initialize SQLite database
-const db = new sqlite3.Database('./database/data.db', (err) => {
-    if (err) {
-        console.error('Could not connect to database', err);
-    } else {
-        console.log('Connected to SQLite database');
-        // Create resources table if it doesn't exist
-        db.run(`CREATE TABLE IF NOT EXISTS resources (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
-            url TEXT NOT NULL,
-            description TEXT,
-            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-        )`);
-    }
-});
 
 
 // Set EJS as templating engine
