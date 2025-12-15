@@ -138,6 +138,10 @@ app.get('/edit/:id', (req, res) => {
     });
 });
 
+app.get('/admin', (req, res) => {
+    res.render('admin');
+});
+
 // Socket.io connection handling
 io.on('connection', (socket) => {
     console.log('Socket connected:', socket.id);
@@ -159,6 +163,12 @@ process.on('SIGINT', () => {
         process.exit(0);
     });
 });
+
+app.get('/reference', (req, res) => {
+    res.render('reference');
+});
+
+app.use('/referenceFiles', express.static('referenceFiles'));
 
 http.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);

@@ -10,8 +10,9 @@
 
 <body>
     <div id="navlinks">
-        <h2 id="chubttl">CHUB.</h2>  
+        <h2 id="chubttl">C-HUB.</h2>  
         <div id="btns">
+            <a id="referencePage" href="/reference">Reference Page</a>
             <a id="home" href="/">Home</a>
         <a id="forum" href="/forum">Create +</a>
         </div>
@@ -41,9 +42,12 @@
                         <li>
                             <strong id="titletxt">
                                 <%= r.title %>
+                                <% if (r.verified) { %>
+                                    <span class="verified" title="Verified">&#10003;</span>
+                                <% } %>
                             </strong>
                             <div id="time"><%= new Date(r.createdAt).toLocaleString() %></div>
-                            <hr style="width: 65% ; margin-left: 0; margin-top: 5px; margin-bottom: 5px; height: 4px; background-color: #ffffff; border: none;">
+                            <hr style="width: 65%; margin-left: 0; margin-top: 5px; margin-bottom: 5px; height: 4px; background-color: #ffffff; border: none;">
                             <p>
                                 <%= r.description || '' %>
                             </p>
@@ -54,18 +58,28 @@
                             <!-- input box at bottom-right of each resource -->
                             <input class="box-input" data-id="<%= r.id %>" type="text" placeholder="insert code to edit" />
                         </li>
-                        <% }) %>
-                </ul>
-                <% } else { %>
-                    <p>No resources yet — be the first to add one!</p>
+                    <% }) %>
+                    </ul>
+                    <% } else { %>
+                        <p>No resources yet — be the first to add one!</p>
                     <% } %>
         </section>
+                    
     </div>
 </body>
-
+                    
 </html>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    function verifyCheck(isVerified) {
+        if (!isVerified) {
+            const proceed = confirm("This resource has not been verified. Are you sure you want to proceed?");
+            return proceed; // If true, navigation continues; if false, navigation is prevented.
+        }
+        return true; // If verified, allow navigation.
+        }
+
+
     function searchResources() {
         const input = document.getElementById('searchbar');
         const filter = input.value.toLowerCase();
@@ -113,7 +127,7 @@
         }
 
         const li = document.createElement('li');
-        li.innerHTML = '<strong id="titletxt">' + escapeHtml(r.title) + '</strong>' +
+        li.innerHTML = '<strong id="titletxt">' + escapeHtml(r.title) + (r.verified ? ' <span class="verified" title="Verified">&#10003;</span>' : '') + '</strong>' +
             '<hr style="width: 65% ; margin-left: 0; margin-top: 5px; margin-bottom: 5px; height: 4px; background-color: #ffffff; border: none;">' +
             '<p>' + escapeHtml(r.description || '') + '</p>' +
             '<a id="titleref" href="' + escapeHtml(r.url) + '" target="_blank" rel="noopener noreferrer"><strong>Go There!</strong></a>' +
