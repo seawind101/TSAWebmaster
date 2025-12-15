@@ -40,12 +40,28 @@
                     </label>
                 </div>
                 <div>
+                    <label>Code<br>
+                        <textarea id="codebox" name="code" placeholder="Insert an 8-digit code" required maxlength="8" inputmode="numeric" aria-describedby="codeHelp"></textarea>
+                    </label>
+                </div>
+                <div>
                     <button id="submit" type="submit">Submit</button>
                 </div>
             </form>
             <p>After submitting, view all resources on the <a id="rhubt" href="/chub">Resource Hub</a>.</p>
         </section>
     </div>
+    <script>
+        (function(){
+            var codeBox = document.getElementById('codebox');
+            if (!codeBox) return;
+            codeBox.addEventListener('input', function () {
+                // Remove any non-digit characters and limit to 8 chars
+                var cleaned = this.value.replace(/\D/g, '').slice(0, 8);
+                if (this.value !== cleaned) this.value = cleaned;
+            });
+        })();
+    </script>
 </body>
 
 </html>
