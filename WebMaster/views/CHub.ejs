@@ -42,16 +42,16 @@
                         <li>
                             <strong id="titletxt">
                                 <%= r.title %>
-                                <% if (r.verified) { %>
+                                <% if (Number(r.verified)) { %>
                                     <span class="verified" title="Verified">&#10003;</span>
                                 <% } %>
                             </strong>
-                            <div id="time"><%= new Date(r.createdAt).toLocaleString() %></div>
+                            <div id="time"><%= new Date(r.created_at).toLocaleString() %></div>
                             <hr style="width: 65%; margin-left: 0; margin-top: 5px; margin-bottom: 5px; height: 4px; background-color: #ffffff; border: none;">
                             <p>
                                 <%= r.description || '' %>
                             </p>
-                            <a id="titleref" href="<%= r.url %>" target="_blank" rel="noopener noreferrer"><strong>
+                            <a id="titleref" href="<%= r.url %>" target="_blank" rel="noopener noreferrer" onclick="return verifyCheck(<%= Number(r.verified) %>);"><strong>
                                     Go There!
                                 </strong></a>
 
@@ -66,11 +66,8 @@
         </section>
                     
     </div>
-</body>
-                    
-</html>
-<script src="/socket.io/socket.io.js"></script>
-<script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
     function verifyCheck(isVerified) {
         if (!isVerified) {
             const proceed = confirm("This resource has not been verified. Are you sure you want to proceed?");
@@ -128,59 +125,82 @@
 
         const li = document.createElement('li');
         li.innerHTML = '<strong id="titletxt">' + escapeHtml(r.title) + (r.verified ? ' <span class="verified" title="Verified">&#10003;</span>' : '') + '</strong>' +
+            '<div id="time">' + new Date(r.created_at).toLocaleString() + '</div>' +
             '<hr style="width: 65% ; margin-left: 0; margin-top: 5px; margin-bottom: 5px; height: 4px; background-color: #ffffff; border: none;">' +
             '<p>' + escapeHtml(r.description || '') + '</p>' +
-            '<a id="titleref" href="' + escapeHtml(r.url) + '" target="_blank" rel="noopener noreferrer"><strong>Go There!</strong></a>' +
-            '<input class="box-input" data-id="' + escapeHtml(r.id) + '" type="text" placeholder="Add note..." />';
+            '<a id="titleref" href="' + escapeHtml(r.url) + '" target="_blank" rel="noopener noreferrer" onclick="return verifyCheck(' + Number(r.verified) + ');"><strong>Go There!</strong></a>' +
+            '<input class="box-input" data-id="' + escapeHtml(r.id) + '" type="text" placeholder="insert code to edit" />';
 
         ul.insertBefore(li, ul.firstChild);
 
         searchResources();
     });
 
-    // verify input value with server; open edit page if match
+    // verify input value with server; open edit/admin page if match
     function verifyAndOpen(id, code, inputEl) {
+        const idNum = parseInt(id, 10);
+        if (Number.isNaN(idNum) || !code) {
+            inputEl.style.borderColor = 'red';
+            setTimeout(() => inputEl.style.borderColor = '', 1200);
+            return;
+        }
+        console.log('verify: sending', { idNum, code });
         fetch('/verify-code', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: id, code: code })
+            body: JSON.stringify({ id: idNum, code: code })
         })
         .then(r => r.json())
         .then(j => {
+            console.log('verify: response', j);
             if (j.ok) {
                 if (j.admin) {
-                    window.location.href = '/admin';
+                    window.location.href = '/admin/' + encodeURIComponent(code) + '/' + idNum;
                 } else {
-                    window.location.href = '/edit/' + id;
+                    window.location.href = '/edit/' + idNum;
                 }
             } else {
+                console.warn('verify: rejected code');
                 inputEl.style.borderColor = 'red';
                 setTimeout(() => inputEl.style.borderColor = '', 1200);
             }
         })
         .catch(() => {
+            console.error('verify: error', err);
             inputEl.style.borderColor = 'red';
         });
     }
 
-    // attach Enter handler to per-resource inputs
+    // attach auto-verify handlers to each code input (debounced, no Enter needed)
     function attachInputHandlers() {
+        const timers = new WeakMap();
         document.querySelectorAll('.box-input').forEach(inp => {
-            inp.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    const id = inp.dataset.id;
-                    verifyAndOpen(id, inp.value.trim(), inp);
-                }
-            });
+            if (inp._wired) return;
+            inp._wired = true;
+            const trigger = () => {
+                const id = inp.dataset.id;
+                const code = inp.value.trim();
+                if (!code) return; // wait for some input
+                if (timers.has(inp)) clearTimeout(timers.get(inp));
+                const t = setTimeout(() => verifyAndOpen(id, code, inp), 250);
+                timers.set(inp, t);
+            };
+            console.log('verify: wiring input for id', inp.dataset.id);
+            inp.addEventListener('input', trigger);
+            inp.addEventListener('blur', trigger);
         });
     }
 
-    // call on load and when socket adds a new li
-    attachInputHandlers();
-    // when socket adds a resource, re-attach handlers
-    const originalSocketHandler = socket.listeners && socket.listeners('resource_added');
-    socket.on('resource_added', (r) => {
-        // ...existing code that inserts li...
+    // ensure handlers after DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', attachInputHandlers);
+    } else {
+        attachInputHandlers();
+    }
+
+    socket.on('resource_added', () => {
         attachInputHandlers();
     });
-</script>
+    </script>
+</body>
+</html>

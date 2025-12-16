@@ -3,9 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Edit Resource</title>
+    <link rel="stylesheet" href="/css/edit.css">
 </head>
 <body>
-    
+    <header>
+        <div class="title">Edit Resource</div>
+        <nav>
+            <a href="/chub">Back to resources</a>
+        </nav>
+    </header>
+
+    <section class="card">
+        <form action="/update/<%= resource.id %>" method="post">
+            <div class="field">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" value="<%= resource.title %>" required>
+            </div>
+            <div class="field">
+                <label for="url">URL</label>
+                <input type="url" id="url" name="url" value="<%= resource.url %>" required>
+            </div>
+            <div class="field">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4"><%= resource.description || '' %></textarea>
+            </div>
+            <p class="note">Saving changes will set this resource to unverified until an admin re-verifies it.</p>
+            <div class="actions">
+                <button type="submit">Save changes</button>
+                <a class="secondary" href="/chub">Cancel</a>
+            </div>
+        </form>
+        <form action="/delete/<%= resource.id %>" method="post" onsubmit="return confirm('Delete this resource?');">
+            <button class="danger" type="submit">Delete resource</button>
+        </form>
+    </section>
 </body>
 </html>

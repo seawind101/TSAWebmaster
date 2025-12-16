@@ -1,11 +1,13 @@
-CREATE TABLE resources (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    url VARCHAR(255) NOT NULL,
+-- SQLite schema for resources table
+-- Ensures auto-incrementing primary key and proper defaults
+CREATE TABLE IF NOT EXISTS resources (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    url TEXT NOT NULL,
     description TEXT,
-    verified BOOLEAN DEFAULT FALSE,
+    verified INTEGER DEFAULT 0,
     code INTEGER,
-    category VARCHAR(100),
+    category TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

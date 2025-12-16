@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Edit</title>
+    <link rel="stylesheet" href="/css/edit.css">
+</head>
+<body>
+    <header>
+        <div class="title">Admin: Edit Resource</div>
+        <nav>
+            <a href="/chub">Back to resources</a>
+        </nav>
+    </header>
+
+    <section class="card">
+            <% if (resource) { %>
+            <div class="meta">ID <%= resource.id %> · Code: <%= resource.code || 'n/a' %> · <%= new Date(resource.created_at).toLocaleString() %></div>
+            <form action="/admin/update/<%= resource.id %>" method="post">
+            <input type="hidden" name="adminCode" value="<%= adminCode %>">
+            <div class="field">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" value="<%= resource.title %>" required>
+            </div>
+            <div class="field">
+                <label for="url">URL</label>
+                <input type="url" id="url" name="url" value="<%= resource.url %>" required>
+            </div>
+            <div class="field">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4"><%= resource.description || '' %></textarea>
+            </div>
+            <div class="field">
+                <label class="checkbox">
+                    <!-- Admin verified toggle via AJAX; no navigation -->
+                    <input type="checkbox" id="verifiedCheckbox" <%= Number(resource.verified) ? 'checked' : '' %> onchange="toggleVerified(event)">
+                    Verified
+                </label>
+            </div>
+            <p class="note">Saving changes will set this resource to unverified until an admin re-verifies it.</p>
+            <div class="actions">
+                <button type="submit">Save changes</button>
+                <a class="secondary" href="/chub">Cancel</a>
+            </div>
+        </form>
+
+        <!-- Removed hidden verify form; handled by AJAX -->
+    <script>
+        async function toggleVerified(event) {
+            const checked = !!event.target.checked;
+            try {
+                const res = await fetch('/verify/<%= resource.id %>', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ adminCode: '<%= adminCode %>' })
+                });
+                if (!res.ok) {
+                    console.error('Verify toggle failed with status', res.status);
+                    event.target.checked = !checked; // revert UI on failure
+                    return;
+                }
+                const data = await res.json();
+                // Ensure UI reflects DB truth
+                event.target.checked = Number(data.verified) === 1;
+            } catch (e) {
+                console.error('Verify toggle error', e);
+                event.target.checked = !checked; // revert on error
+            }
+        }
+    </script>
+        <form action="/delete/<%= resource.id %>" method="post" onsubmit="return confirm('Delete this resource?');">
+            <button class="danger" type="submit">Delete resource</button>
+        </form>
+            <% } else { %>
+                <p>Select a resource to edit. Go to <a href="/chub">Resources</a>, click Edit on a resource, or browse directly to <code>/admin/<%= adminCode %>/<em>id</em></code>.</p>
+            <% } %>
+    </section>
+    
+    
+</body>
+</html>
